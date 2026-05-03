@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
 import { ILoginParams } from '../../models/login-params';
-import { HttpErrorResponse } from '@angular/common/http';
 import { setErrorMessage } from '../../../../shared/utils/set-error-message';
 
 @Component({
