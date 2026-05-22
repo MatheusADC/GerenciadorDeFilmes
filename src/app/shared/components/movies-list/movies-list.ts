@@ -1,9 +1,10 @@
 import { Component, input } from '@angular/core';
 import { MoviesListResponse } from '../../types/movies-list-reponse';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-movies-list',
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './movies-list.html',
   styleUrl: './movies-list.css',
   host: {
@@ -11,5 +12,7 @@ import { MoviesListResponse } from '../../types/movies-list-reponse';
   },
 })
 export class MoviesList {
+  BASE_PATH = 'http://localhost:YOUR_PORT';
+
   movies = input<MoviesListResponse>([]);
 }
