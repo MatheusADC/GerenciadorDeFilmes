@@ -17,7 +17,7 @@
     </div>
     <app-movies-filter />
 
-    @if (movies().length === 0) {
+    @if (moviesFiltered().length === 0) {
     <div class="flex-1 flex flex-col items-center justify-center text-center p-8">
       <img src="images/my-movies.svg" alt="" aria-hidden="true"
         class="mb-6 w-14 h-14 mr-3 opacity-50 transition duration-200" />
