@@ -13,8 +13,6 @@ import { rxResource } from '@angular/core/rxjs-interop';
 export class ExploreMovies {
   private readonly _moviesApi = inject(MoviesApi);
 
-  movies = signal([{}]);
-
   moviesResource = rxResource({
     params: () => true,
     stream: () => this._moviesApi.getMovies(),
