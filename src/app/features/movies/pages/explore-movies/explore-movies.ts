@@ -13,19 +13,33 @@ import { rxResource } from '@angular/core/rxjs-interop';
 export class ExploreMovies {
   private readonly _moviesApi = inject(MoviesApi);
 
+  movieTitleFilter = signal('');
+  movieCategoryFilter = signal('');
+
   moviesResource = rxResource({
     params: () => true,
     stream: () => this._moviesApi.getMovies(),
   });
 
   moviesFiltered = linkedSignal(() => {
+    const moviesList = this.moviesResource.value() ?? [];
     const ERROR_ON_RESPONSE = !!this.moviesResource.error();
 
     if (ERROR_ON_RESPONSE) return [];
 
-    const moviesList = this.moviesResource.value();
+    const titleSearch = this.movieTitleFilter().toLowerCase().trim();
+    const categorySearch = this.movieCategoryFilter().toLowerCase().trim();
 
-    return moviesList ?? [];
+    if (!titleSearch && !categorySearch) {
+      return moviesList;
+    }
+
+    return moviesList.filter((movie) => {
+      const matchesTitle = movie.titulo.toLowerCase().includes(titleSearch);
+      const matchesCategory = movie.genero.toLowerCase().includes(categorySearch);
+
+      return matchesTitle && matchesCategory;
+    });
   });
 
   adicionarFilme() {}
