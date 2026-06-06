@@ -12,7 +12,6 @@ import { MoviesApi } from '../../services/movies-api';
 })
 export class MovieDetails {
   private readonly _moviesApi = inject(MoviesApi);
-  private readonly _favoritesApi = inject(FavoritesApi);
 
   readonly BASE_URL = 'http://localhost:3000';
 
@@ -40,6 +39,17 @@ export class MovieDetails {
     const boolArray = [0, 1, 2, 3, 4].map((index) => index < rating);
 
     return boolArray;
+  });
+
+  rateMovieResource = rxResource({
+    params: () => {
+      const rating = this.currentRating() ?? 0;
+
+      if (rating > 0) return { id: +this.id(), rating };
+
+      return undefined;
+    },
+    stream: ({ params }) => this._moviesApi.rateMovie(params.id, params.rating),
   });
 
   toggleFavorite() {
