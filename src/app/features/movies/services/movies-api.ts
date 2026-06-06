@@ -16,5 +16,10 @@ export class MoviesApi {
   getMoviesDetails(id: number) {
     return this._httpClient.get<IMovieResponse>('http://localhost:YOUR_PORT/movies/' + id);
   }
-}
 
+  rateMovie(movieId: number, rating: number) {
+    return this._httpClient.post<IMovieResponse>('http://localhost:YOUR_PORT/movies/' + movieId + '/rate', {
+      rating
+    });
+  }
+}
