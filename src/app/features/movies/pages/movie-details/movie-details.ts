@@ -3,6 +3,7 @@ import { Component, computed, inject, input, linkedSignal, signal, WritableSigna
 import { rxResource } from '@angular/core/rxjs-interop';
 import { FavoritesApi } from '../../../../shared/services/favorites-api';
 import { MoviesApi } from '../../services/movies-api';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-movie-details',
@@ -49,7 +50,10 @@ export class MovieDetails {
 
       return undefined;
     },
-    stream: ({ params }) => this._moviesApi.rateMovie(params.id, params.rating),
+    stream: ({ params }) =>
+      this._moviesApi
+        .rateMovie(params.id, params.rating)
+        .pipe(tap((movieUpdated) => this.movieDetails.set(movieUpdated))),
   });
 
   toggleFavorite() {
