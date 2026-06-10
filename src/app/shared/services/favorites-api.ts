@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { MoviesListResponse } from "../types/movies-list-reponse";
 import { IMovieToFavoriteSuccessResponse } from "../models/movie-to-favorite-success-response";
-import { map } from "rxjs";
+import { map, Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -24,12 +24,25 @@ export class FavoritesApi {
   removeMoviesFromFavorites(movieId: number) {
     return this._httpClient.delete<void>('http://localhost:YOUR_PORT/favorites/' + movieId);
   }
-}
 
-isMovieInFavorites(movieId: number) {
+  isMovieInFavorites(movieId: number) {
     return this.getFavorites().pipe(
       map((favoritesListResponse) =>
         favoritesListResponse.find((fm) => fm.id === movieId) ? true : false
       )
     );
   }
+
+  toggleMovieFavorite(
+    isMovieCurrentFavorite: boolean,
+    movieId: number
+  ): Observable<void | IMovieToFavoriteSuccessResponse> {
+    const removeMovie = isMovieCurrentFavorite;
+
+    if (removeMovie) {
+      return this.removeMoviesFromFavorites(movieId);
+    } else {
+      return this.addMoviesToFavorites(movieId);
+    }
+  }
+}
