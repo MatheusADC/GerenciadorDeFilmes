@@ -1,7 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MoviesApi } from '../../services/movies-api';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { setErrorMessage } from '../../../../shared/utils/set-error-message';
 
 @Component({
   selector: 'app-create-movie',
@@ -24,6 +25,13 @@ export class CreateMovie {
   createMovieResource = rxResource({
     params: () => this.movieFormData(),
     stream: ({ params }) => this._moviesApi.createMovie(params),
+  });
+
+  errorMessage = computed(() => setErrorMessage(this.createMovieResource.error()));
+  sucessMessage = computed(() => {
+    const SUCCESS_CREATION = this.createMovieResource.hasValue();
+
+    return SUCCESS_CREATION ? 'Filme criado com sucesso' : undefined;
   });
 
   onFileSelected(event: Event) {
