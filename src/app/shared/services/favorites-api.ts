@@ -3,6 +3,7 @@ import { inject, Injectable } from "@angular/core";
 import { MoviesListResponse } from "../types/movies-list-reponse";
 import { IMovieToFavoriteSuccessResponse } from "../models/movie-to-favorite-success-response";
 import { map, Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -11,18 +12,18 @@ export class FavoritesApi {
   private readonly _httpClient = inject(HttpClient);
 
   getFavorites() {
-    return this._httpClient.get<MoviesListResponse>('http://localhost:YOUR_PORT/favorites');
+    return this._httpClient.get<MoviesListResponse>(environment.baseUrl + '/favorites');
   }
 
   addMoviesToFavorites(movieId: number) {
     return this._httpClient.post<IMovieToFavoriteSuccessResponse>(
-      'http://localhost:YOUR_PORT/favorites/' + movieId,
+      environment.baseUrl + '/favorites/' + movieId,
       {}
     );
   }
 
   removeMoviesFromFavorites(movieId: number) {
-    return this._httpClient.delete<void>('http://localhost:YOUR_PORT/favorites/' + movieId);
+    return this._httpClient.delete<void>(environment.baseUrl + '/favorites/' + movieId);
   }
 
   isMovieInFavorites(movieId: number) {
